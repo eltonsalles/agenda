@@ -1,4 +1,4 @@
-package br.com.senac.constants;
+package br.senac.tads.pi3a.constants;
 
 /**
  * Contém a url da base de dados, o usuário e senha para acesso

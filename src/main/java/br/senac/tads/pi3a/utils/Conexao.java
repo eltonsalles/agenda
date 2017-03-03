@@ -1,6 +1,6 @@
-package br.com.senac.utils;
+package br.senac.tads.pi3a.utils;
 
-import br.com.senac.constants.Constantes;
+import br.senac.tads.pi3a.constants.Constantes;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
