@@ -50,12 +50,9 @@ public class ManterContato extends javax.swing.JFrame {
 
         lblNome.setText("Nome:");
 
-        txtNome.setText("Fillipe Pinheiro de Oliveira");
-
         lblDataNasc.setText("Data de nascimento:");
 
         txtDataNasc.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
-        txtDataNasc.setText("25/08/1995");
 
         javax.swing.GroupLayout jpInfosPessoaisLayout = new javax.swing.GroupLayout(jpInfosPessoais);
         jpInfosPessoais.setLayout(jpInfosPessoaisLayout);
@@ -76,12 +73,13 @@ public class ManterContato extends javax.swing.JFrame {
             jpInfosPessoaisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpInfosPessoaisLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jpInfosPessoaisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblNome)
-                    .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jpInfosPessoaisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jpInfosPessoaisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblDataNasc)
-                        .addComponent(txtDataNasc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtDataNasc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jpInfosPessoaisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblNome)
+                        .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(42, Short.MAX_VALUE))
         );
 
@@ -89,11 +87,7 @@ public class ManterContato extends javax.swing.JFrame {
 
         lblEmail.setText("E-mail:");
 
-        txtAddEmail.setText("fillipe.pinheiro@outlook.com");
-
         lblTelefone.setText("Telefone:");
-
-        txtAddTelefone.setText("11 5831 0205");
 
         javax.swing.GroupLayout jpInfosContatoLayout = new javax.swing.GroupLayout(jpInfosContato);
         jpInfosContato.setLayout(jpInfosContatoLayout);

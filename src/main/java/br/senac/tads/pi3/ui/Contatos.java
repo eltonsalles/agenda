@@ -34,6 +34,9 @@ public class Contatos extends javax.swing.JFrame {
         bntIncluir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Contatos");
+
+        jpContatos.setBorder(javax.swing.BorderFactory.createTitledBorder("Buscar contato"));
 
         jtContatos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -53,7 +56,6 @@ public class Contatos extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jtContatos);
 
-        txtBuscar.setText("Buscar...");
         txtBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtBuscarActionPerformed(evt);
@@ -99,7 +101,7 @@ public class Contatos extends javax.swing.JFrame {
                 .addComponent(jpContatos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(bntIncluir, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
