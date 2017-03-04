@@ -66,7 +66,7 @@ public class Contato {
         return email;
     }
 
-    /**
+    /*
      * @param email the email to set
      */
     public void setEmail(String email) {
@@ -75,11 +75,11 @@ public class Contato {
 
     public boolean addContato(){
         
-        return true;
+        return false;
     }
     public boolean removerContato(){
         
-        return true;
+        return false;
     }
     
 }
