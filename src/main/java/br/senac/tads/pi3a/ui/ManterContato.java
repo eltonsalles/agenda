@@ -5,11 +5,106 @@
  */
 package br.senac.tads.pi3a.ui;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  *
  * @author fillipe.poliveira
  */
 public class ManterContato extends javax.swing.JFrame {
+
+    public static Contato validarDados(Map dados) throws Exception {
+        String nome, email, telefone;
+        Date dataNasc;
+
+        nome = dados.get("nome").toString().replaceAll("[^a-z,A-Z ]*", "");
+        if (nome.trim().isEmpty()) {
+            throw new Exception("Informe o nome do contato!");
+        } else if (!validarTamanho(nome, 150)) {
+            throw new Exception("Informe o nome do contato "
+                    + "corretamente, o limite de caracteres é 150!");
+        }
+
+        dataNasc = validarData(
+                dados.get("dataNascimento").toString());
+        if (dataNasc == null) {
+            throw new Exception("Informe a data de nascimento do contato"
+                    + " corretamente!");
+        }
+
+        email = dados.get("email").toString().toLowerCase();
+        if (!email.trim().isEmpty()) {
+            if (!validarTamanho(email, 150)) {
+                throw new Exception("Informe o email do contato "
+                        + "corretamente, o limite de caracteres é 150!");
+            } else if (!validarEmail(email)) {
+                throw new Exception("Informe um email válido!");
+            }
+        } else {
+            email = null;
+        }
+
+        telefone = dados.get("telefone").toString().replaceAll("[^0-9]*", "");
+        if (!telefone.trim().isEmpty()) {
+            if (telefone.length() != 10) {
+                throw new Exception("Informe o telefone do contato "
+                        + "corretamente, o número de caracteres é 10!");
+            }
+        } else {
+            telefone = null;
+        }
+
+        Contato contato = new Contato(nome, email, telefone, dataNasc);
+
+        return contato;
+
+    }
+
+    public static boolean validarTamanho(String campo, int tamanho) {
+        if (campo.length() > tamanho) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static Date validarData(String data) {
+        Date dataValida, inicio, fim;
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+        try {
+            sdf.setLenient(false);
+            dataValida = sdf.parse(data);
+            inicio = sdf.parse("01/01/1900");
+            fim = new Date();
+
+            if (dataValida.after(inicio) && dataValida.before(fim)) {
+                return dataValida;
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static boolean validarEmail(String email) {
+        String emailPattern = "\\b(^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@"
+                + "([A-Za-z0-9-])+(\\.[A-Za-z0-9-]+)*((\\.[A-Za-z0-9]{2,})|"
+                + "(\\.[A-Za-z0-9]{2,}\\.[A-Za-z0-9]{2,}))$)\\b";
+        Pattern pattern = Pattern.compile(emailPattern, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(email);
+
+        if (matcher.matches()) {
+            return true;
+        }
+
+        return false;
+    }
 
     /**
      * Creates new form ManterContato
