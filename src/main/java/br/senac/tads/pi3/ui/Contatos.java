@@ -27,11 +27,13 @@ public class Contatos extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jpContatos = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtContatos = new javax.swing.JTable();
-        jpContatos = new javax.swing.JPanel();
         txtBuscar = new javax.swing.JTextField();
         bntIncluir = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jtContatos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -51,8 +53,6 @@ public class Contatos extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jtContatos);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
         txtBuscar.setText("Buscar...");
         txtBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -66,7 +66,9 @@ public class Contatos extends javax.swing.JFrame {
             jpContatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpContatosLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jpContatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtBuscar)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jpContatosLayout.setVerticalGroup(
@@ -74,7 +76,9 @@ public class Contatos extends javax.swing.JFrame {
             .addGroup(jpContatosLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(449, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         bntIncluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/incluir.png"))); // NOI18N
