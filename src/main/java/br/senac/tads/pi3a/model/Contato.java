@@ -14,9 +14,15 @@ import java.util.Date;
 public class Contato {
     private String nome;
     private Date dataNasc;
-    private int telefone;
+    private String telefone;
     private String email;
 
+    public Contato(String nome, Date dataNasc, String tel, String email){
+        this.nome = nome;
+        this.dataNasc = dataNasc;
+        this.telefone = tel;
+        this.email = email;
+    }
     /**
      * @return the nome
      */
@@ -48,14 +54,14 @@ public class Contato {
     /**
      * @return the telefone
      */
-    public int getTelefone() {
+    public String getTelefone() {
         return telefone;
     }
 
     /**
      * @param telefone the telefone to set
      */
-    public void setTelefone(int telefone) {
+    public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
 
