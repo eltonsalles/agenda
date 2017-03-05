@@ -15,8 +15,8 @@ public class Contato {
 
     private String nome;
     private Date dataNasc;
-    private String telefone;
     private String email;
+    private String telefone;
 
     /**
      * 
