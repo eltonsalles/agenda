@@ -6,18 +6,27 @@
 package br.senac.tads.pi3a.ui;
 
 import br.senac.tads.pi3a.model.Contato;
+import br.senac.tads.pi3a.service.ServicoContato;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author fillipe.poliveira
  */
 public class ManterContato extends javax.swing.JFrame {
-
+    Contatos contatos = null;
+    /**
+     * 
+     * @param dados
+     * @return
+     * @throws Exception 
+     */
     public static Contato validarDados(Map dados) throws Exception {
         String nome, email, telefone;
         Date dataNasc;
@@ -59,12 +68,17 @@ public class ManterContato extends javax.swing.JFrame {
             telefone = null;
         }
 
-        Contato contato = new Contato(nome,dataNasc, telefone,email);
+        Contato contato = new Contato(nome, dataNasc, telefone, email);
 
         return contato;
 
     }
-
+    /**
+     * 
+     * @param campo
+     * @param tamanho
+     * @return 
+     */
     public static boolean validarTamanho(String campo, int tamanho) {
         if (campo.length() > tamanho) {
             return false;
@@ -72,7 +86,11 @@ public class ManterContato extends javax.swing.JFrame {
 
         return true;
     }
-
+    /**
+     * 
+     * @param data
+     * @return 
+     */
     public static Date validarData(String data) {
         Date dataValida, inicio, fim;
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -92,7 +110,11 @@ public class ManterContato extends javax.swing.JFrame {
             return null;
         }
     }
-
+    /**
+     * 
+     * @param email
+     * @return 
+     */
     public static boolean validarEmail(String email) {
         String emailPattern = "\\b(^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@"
                 + "([A-Za-z0-9-])+(\\.[A-Za-z0-9-]+)*((\\.[A-Za-z0-9]{2,})|"
@@ -123,7 +145,6 @@ public class ManterContato extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        bntVoltar = new javax.swing.JButton();
         jpInfosPessoais = new javax.swing.JPanel();
         lblNome = new javax.swing.JLabel();
         txtNome = new javax.swing.JTextField();
@@ -131,16 +152,15 @@ public class ManterContato extends javax.swing.JFrame {
         txtDataNasc = new javax.swing.JFormattedTextField();
         jpInfosContato = new javax.swing.JPanel();
         lblEmail = new javax.swing.JLabel();
-        txtAddEmail = new javax.swing.JTextField();
+        txtEmail = new javax.swing.JTextField();
         lblTelefone = new javax.swing.JLabel();
-        txtAddTelefone = new javax.swing.JFormattedTextField();
-        bntExcluir = new javax.swing.JButton();
+        txtTelefone = new javax.swing.JFormattedTextField();
         bntAlterar = new javax.swing.JButton();
         bntSalvar = new javax.swing.JButton();
+        bntExcluir = new javax.swing.JButton();
+        bntVoltar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        bntVoltar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/voltar.png"))); // NOI18N
 
         jpInfosPessoais.setBorder(javax.swing.BorderFactory.createTitledBorder("Informações pessoais"));
 
@@ -193,11 +213,11 @@ public class ManterContato extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(lblEmail)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtAddEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(lblTelefone)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtAddTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jpInfosContatoLayout.setVerticalGroup(
@@ -206,13 +226,11 @@ public class ManterContato extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jpInfosContatoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblEmail)
-                    .addComponent(txtAddEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtAddTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblTelefone))
                 .addContainerGap(44, Short.MAX_VALUE))
         );
-
-        bntExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/excluir.png"))); // NOI18N
 
         bntAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/alterar.png"))); // NOI18N
         bntAlterar.addActionListener(new java.awt.event.ActionListener() {
@@ -222,22 +240,42 @@ public class ManterContato extends javax.swing.JFrame {
         });
 
         bntSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/salvar.png"))); // NOI18N
+        bntSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bntSalvarActionPerformed(evt);
+            }
+        });
+
+        bntExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/excluir.png"))); // NOI18N
+        bntExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bntExcluirActionPerformed(evt);
+            }
+        });
+
+        bntVoltar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/voltar.png"))); // NOI18N
+        bntVoltar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bntVoltarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(bntExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(bntAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(bntSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(bntSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(4, 4, 4))
                     .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
                         .addComponent(bntVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -250,15 +288,16 @@ public class ManterContato extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jpInfosPessoais, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jpInfosPessoais, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jpInfosContato, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(bntVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jpInfosContato, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(bntAlterar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(bntSalvar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(bntExcluir, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(bntAlterar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(bntExcluir, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -266,8 +305,48 @@ public class ManterContato extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void bntAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntAlterarActionPerformed
-        // TODO add your handling code here:
+        try {
+
+            Contato dados = validarDados(pegarDados());
+
+            // Envia os dados para alteração
+            ServicoContato.alterar(dados);
+
+            JOptionPane.showMessageDialog(this, "Cadastro atualizado com "
+                    + "sucesso!", "Contato", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_bntAlterarActionPerformed
+
+    private void bntSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntSalvarActionPerformed
+        try {
+            Contato dados = validarDados(pegarDados());
+
+            // Envia os dados para cadastro
+            ServicoContato.cadastrar(dados);
+
+            JOptionPane.showMessageDialog(this,
+                    "Cadastro realizado com sucesso!",
+                    "Contato", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_bntSalvarActionPerformed
+
+    private void bntExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntExcluirActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bntExcluirActionPerformed
+
+    private void bntVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntVoltarActionPerformed
+        contatos.toFront();
+        contatos.setAlwaysOnTop(true);
+        
+    }//GEN-LAST:event_bntVoltarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -315,9 +394,25 @@ public class ManterContato extends javax.swing.JFrame {
     private javax.swing.JLabel lblEmail;
     private javax.swing.JLabel lblNome;
     private javax.swing.JLabel lblTelefone;
-    private javax.swing.JTextField txtAddEmail;
-    private javax.swing.JFormattedTextField txtAddTelefone;
     private javax.swing.JFormattedTextField txtDataNasc;
+    private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtNome;
+    private javax.swing.JFormattedTextField txtTelefone;
     // End of variables declaration//GEN-END:variables
+    /**
+     * 
+     * @return 
+     */
+    private Map pegarDados() {
+        Map<String, String> dados = new HashMap<>();
+
+        //Dados Pessoais
+        dados.put("nome", txtNome.getText());
+        dados.put("dataNascimento", txtDataNasc.getText());
+        dados.put("telefone", txtTelefone.getText());
+        dados.put("email", txtEmail.getText());
+
+        return dados;
+    }
+
 }

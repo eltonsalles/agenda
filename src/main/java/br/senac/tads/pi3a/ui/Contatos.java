@@ -5,11 +5,20 @@
  */
 package br.senac.tads.pi3a.ui;
 
+import br.senac.tads.pi3a.service.ServicoContato;
+import br.senac.tads.pi3a.model.Contato;
+import static br.senac.tads.pi3a.ui.ManterContato.validarTamanho;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author fillipe.poliveira
  */
 public class Contatos extends javax.swing.JFrame {
+
+    ManterContato manterContato = null;
 
     /**
      * Creates new form Contatos
@@ -97,6 +106,11 @@ public class Contatos extends javax.swing.JFrame {
         );
 
         bntIncluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/incluir.png"))); // NOI18N
+        bntIncluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bntIncluirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -125,8 +139,41 @@ public class Contatos extends javax.swing.JFrame {
     }//GEN-LAST:event_txtBuscarActionPerformed
 
     private void bntBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntBuscarActionPerformed
-        // TODO add your handling code here:
+        List<Contato> listaContato = new ArrayList<>();
+        Contato contato = null;
+
+        try {
+
+            if (txtBuscar.getText().trim().isEmpty()) {
+                throw new Exception("Informe o nome do contato!");
+            } else if (!validarTamanho(txtBuscar.getText(), 150)) {
+                throw new Exception("Informe o nome do contato "
+                        + "corretamente, o limite de caracteres é 150!");
+            } else {
+                listaContato = ServicoContato.consultarContatosPorNome(txtBuscar.getText());
+
+            }
+
+            if (contato == null && listaContato.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "A pesquisa não retornou "
+                        + "nenhum resultado!", "Venda",
+                        JOptionPane.WARNING_MESSAGE);
+
+            } else {
+                preencherTabela(listaContato);
+
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_bntBuscarActionPerformed
+
+    private void bntIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntIncluirActionPerformed
+        manterContato.toFront();
+        manterContato.setAlwaysOnTop(true);
+
+    }//GEN-LAST:event_bntIncluirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -142,16 +189,24 @@ public class Contatos extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Contatos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Contatos.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Contatos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Contatos.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Contatos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Contatos.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Contatos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Contatos.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -171,4 +226,23 @@ public class Contatos extends javax.swing.JFrame {
     private javax.swing.JTable jtContatos;
     private javax.swing.JTextField txtBuscar;
     // End of variables declaration//GEN-END:variables
+    /**
+     *
+     * @param listaContatos
+     */
+    private void preencherTabela(List<Contato> listaContatos) {
+
+        int size = listaContatos.size();
+
+        for (int i = 0; i < size; i++) {
+            Contato cont = listaContatos.get(i);
+
+            if (cont != null) {
+                Object[] row = new Object[1];
+                row[0] = cont.getNome();
+
+            }
+        }
+    }
+
 }
