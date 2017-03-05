@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.senac.tads.pi3a.model;
 
 import java.util.Date;
@@ -17,85 +12,59 @@ public class Contato {
     private Date dataNasc;
     private String telefone;
     private String email;
+    private Date dataCadastro = new Date();
 
     /**
-     * 
+     *
      * @param nome
      * @param dataNasc
      * @param telefone
-     * @param email 
-     */    
-    public Contato(String nome, Date dataNasc, String telefone, String email) {
-        this.nome     = nome;
-        this.dataNasc = dataNasc;
-        this.email    = email;
-        this.telefone = telefone;
-
-    }
-    /**
-     * @return the nome
+     * @param email
      */
+    public Contato(String nome, Date dataNasc, String telefone, String email) {
+        this.nome = nome;
+        this.dataNasc = dataNasc;
+        this.email = email;
+        this.telefone = telefone;
+    }
+
     public String getNome() {
         return nome;
     }
 
-    /**
-     * @param nome the nome to set
-     */
     public void setNome(String nome) {
         this.nome = nome;
     }
 
-    /**
-     * @return the dataNasc
-     */
     public Date getDataNasc() {
         return dataNasc;
     }
 
-    /**
-     * @param dataNasc the dataNasc to set
-     */
     public void setDataNasc(Date dataNasc) {
         this.dataNasc = dataNasc;
     }
 
-    /**
-     * @return the telefone
-     */
     public String getTelefone() {
         return telefone;
     }
 
-    /**
-     * @param telefone the telefone to set
-     */
     public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
 
-    /**
-     * @return the email
-     */
     public String getEmail() {
         return email;
     }
 
-    /*
-     * @param email the email to set
-     */
     public void setEmail(String email) {
         this.email = email;
     }
 
-    public boolean addContato() {
-
-        return false;
+    public Date getDataCadastro() {
+        return dataCadastro;
     }
 
-    public boolean removerContato() {
-
-        return false;
+    public void setDataCadastro(Date dataCadastro) {
+        this.dataCadastro = dataCadastro;
     }
-
 }
