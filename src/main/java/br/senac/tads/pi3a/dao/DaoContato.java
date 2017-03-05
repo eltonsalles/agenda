@@ -20,16 +20,18 @@ import br.senac.tads.pi3a.utils.Conexao;
  * @author Fabiano
  */
 public class DaoContato {
-     public static void inserir(Contato contato) throws SQLException, Exception {
+     public static boolean inserir(Contato contato) throws SQLException, Exception {
         String sql;
 
         sql  = "INSERT INTO cliente (nome,data_nasc, email,telefone ";
         sql += "VALUES (?, ?, ?, ?)";
         
         executarSql(sql, contato);
+        
+        return true;
     }
      
-      public static void alterar(Contato contato) throws SQLException, Exception {
+      public static boolean alterar(Contato contato) throws SQLException, Exception {
         String sql;
         
         sql  = "UPDATE contato SET nome = ?, data_nasc = ?, email = ?,telefone = ? ";
@@ -37,17 +39,22 @@ public class DaoContato {
         sql += "WHERE id = ?";
         
         executarSql(sql, contato);
+        
+        return true;
     }
       
-       public static void excluir(String id) throws SQLException, Exception {
+       public static boolean excluir( int id) throws SQLException, Exception {
         String sql;
         
         sql = "DELETE FROM contato WHERE id = ?";
         
         executarSql(sql, id);
+        
+        return true;
+               
     }
        
-       public static List<Contato> consultarContato() 
+       public static List<Contato> consultarContatos() 
                throws SQLException, Exception {
            
            
@@ -60,17 +67,33 @@ public class DaoContato {
         
         return listaContato;
     }
-         public static Contato consultarContatoId(String id)
+         public static Contato consultarContatoPorId(int id)
             throws SQLException, Exception {
         List<Contato> listaContato;
         String sql;
         
-        sql = "SELECT * FROM cliente WHERE cpf = ?";
+        sql = "SELECT * FROM cliente WHERE id = ?";
         
         listaContato = executarConsulta(sql, id, false);
         
         if (!listaContato.isEmpty()) {
             return listaContato.get(0);
+        }
+        
+        return null;
+    }
+          public static List<Contato> consultarContatoPorNome(String nome)
+            throws SQLException, Exception {
+        List<Contato> listaContato;
+        String sql;
+        
+        sql = "SELECT * FROM cliente WHERE nome = ?";
+        
+        listaContato = executarConsulta(sql, nome, false);
+        
+        if (!listaContato.isEmpty()) {
+            
+            return (List<Contato>) listaContato.get(0);
         }
         
         return null;
@@ -103,7 +126,7 @@ public class DaoContato {
         }
     }
        
-        private static void executarSql(String sql, String id) 
+        private static void executarSql(String sql, int id) 
             throws SQLException, Exception {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -112,7 +135,7 @@ public class DaoContato {
             conn = Conexao.getConexao();
             stmt = conn.prepareStatement(sql);
             
-            stmt.setString(1, id);
+            stmt.setInt(1, id);
 
             stmt.execute();
         } finally {
@@ -179,6 +202,46 @@ public class DaoContato {
             } else {
                 stmt.setString(1, valor.toUpperCase());
             }
+            
+            result = stmt.executeQuery();
+
+            while (result.next()) {                
+                Contato contato = new Contato(
+                        result.getString("nome"), 
+                        result.getDate("data_nasc"), 
+                        result.getString("tel"), 
+                        result.getString("email"));
+                        
+               
+                
+                listaContato.add(contato);
+            }
+        } finally {
+            if (stmt != null && !stmt.isClosed()) {
+                stmt.close();
+            }
+            
+            if (conn != null && !conn.isClosed()) {
+                conn.isClosed();
+            }
+        }
+        
+        return listaContato;
+    }   
+       private static List<Contato> executarConsulta(String sql, int valor, 
+            boolean like) throws SQLException, Exception {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet result;
+        List<Contato> listaContato = new ArrayList<>();
+        
+        try {
+            conn = Conexao.getConexao();
+            stmt = conn.prepareStatement(sql);
+            
+           
+                stmt.setInt(1, valor);
+             
             
             result = stmt.executeQuery();
 

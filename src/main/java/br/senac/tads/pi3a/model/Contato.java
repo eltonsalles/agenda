@@ -12,16 +12,25 @@ import java.util.Date;
  * @author fabiano.bfcarvalho
  */
 public class Contato {
+
     private String nome;
     private Date dataNasc;
     private String telefone;
     private String email;
 
-    public Contato(String nome, Date dataNasc, String tel, String email){
-        this.nome = nome;
+    /**
+     * 
+     * @param nome
+     * @param dataNasc
+     * @param telefone
+     * @param email 
+     */    
+    public Contato(String nome, Date dataNasc, String telefone, String email) {
+        this.nome     = nome;
         this.dataNasc = dataNasc;
-        this.telefone = tel;
-        this.email = email;
+        this.email    = email;
+        this.telefone = telefone;
+
     }
     /**
      * @return the nome
@@ -79,13 +88,14 @@ public class Contato {
         this.email = email;
     }
 
-    public boolean addContato(){
-        
+    public boolean addContato() {
+
         return false;
     }
-    public boolean removerContato(){
-        
+
+    public boolean removerContato() {
+
         return false;
     }
-    
+
 }
