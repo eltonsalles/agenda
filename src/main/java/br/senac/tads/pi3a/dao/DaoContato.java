@@ -71,6 +71,29 @@ public class DaoContato {
 
         return true;
     }
+    
+    /**
+     * Traz todos os contatos da tabela contato
+     * 
+     * @return
+     * @throws SQLException
+     * @throws Exception 
+     */
+    public static List<Contato> consultarContatos() 
+            throws SQLException, Exception {
+        List<Contato> listaContato;
+        String sql;
+
+        sql = "SELECT * FROM contato";
+
+        listaContato = executarConsulta(sql);
+
+        if (!listaContato.isEmpty()) {
+            return listaContato;
+        }
+
+        return null;
+    }
 
     /**
      * Faz uma consulta na tabela contato pelo id
@@ -192,6 +215,51 @@ public class DaoContato {
         }
     }
 
+    /**
+     * Faz a operação select no banco de dados sem paramêtros
+     *
+     * @param sql
+     * @return
+     * @throws SQLException
+     * @throws Exception
+     */
+    private static List<Contato> executarConsulta(String sql)
+            throws SQLException, Exception {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet result;
+        List<Contato> listaContato = new ArrayList<>();
+
+        try {
+            conn = Conexao.getConexao();
+            stmt = conn.prepareStatement(sql);
+
+            result = stmt.executeQuery();
+
+            while (result.next()) {
+                Contato contato = new Contato(
+                        result.getString("nome"),
+                        result.getDate("data_nasc"),
+                        result.getString("telefone"),
+                        result.getString("email"));
+                contato.setId(result.getInt("id"));
+                contato.setDataCadastro(result.getDate("data_cadastro"));
+
+                listaContato.add(contato);
+            }
+        } finally {
+            if (stmt != null && !stmt.isClosed()) {
+                stmt.close();
+            }
+
+            if (conn != null && !conn.isClosed()) {
+                conn.isClosed();
+            }
+        }
+
+        return listaContato;
+    }
+    
     /**
      * Faz a operação select no banco de dados usando como paramêtro uma string
      *
