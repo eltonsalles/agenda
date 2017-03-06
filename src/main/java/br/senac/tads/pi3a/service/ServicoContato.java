@@ -75,6 +75,25 @@ public class ServicoContato {
     }
     
     /**
+     * Traz todos os contatos da tabela
+     * 
+     * @return
+     * @throws SQLException
+     * @throws Exception 
+     */
+    public static List<Contato> consultarContatos() throws SQLException, Exception {
+        try {
+            
+            return DaoContato.consultarContatos();
+            
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+    
+    /**
      * Retorna um objeto Contato conforme o id pesquisado
      * 
      * @param id
