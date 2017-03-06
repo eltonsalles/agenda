@@ -202,6 +202,7 @@ public class DaoContato {
                         result.getDate("data_nasc"),
                         result.getString("telefone"),
                         result.getString("email"));
+                contato.setId(result.getInt("id"));
 
                 listaContato.add(contato);
             }
