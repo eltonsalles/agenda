@@ -7,10 +7,12 @@ package br.senac.tads.pi3a.ui;
 
 import br.senac.tads.pi3a.service.ServicoContato;
 import br.senac.tads.pi3a.model.Contato;
+import br.senac.tads.pi3a.service.ServicoDb;
 import static br.senac.tads.pi3a.ui.ManterContato.validarTamanho;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -24,6 +26,8 @@ public class Contatos extends javax.swing.JFrame {
      * Creates new form Contatos
      */
     public Contatos() {
+        this.verificarConexao();
+        
         initComponents();
     }
 
@@ -151,17 +155,14 @@ public class Contatos extends javax.swing.JFrame {
                         + "corretamente, o limite de caracteres é 150!");
             } else {
                 listaContato = ServicoContato.consultarContatosPorNome(txtBuscar.getText());
-
             }
 
             if (contato == null && listaContato.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "A pesquisa não retornou "
                         + "nenhum resultado!", "Venda",
                         JOptionPane.WARNING_MESSAGE);
-
             } else {
                 preencherTabela(listaContato);
-
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Erro",
@@ -231,7 +232,9 @@ public class Contatos extends javax.swing.JFrame {
      * @param listaContatos
      */
     private void preencherTabela(List<Contato> listaContatos) {
-
+        DefaultTableModel model = (DefaultTableModel) jtContatos.getModel();
+        model.setRowCount(0);
+        
         int size = listaContatos.size();
 
         for (int i = 0; i < size; i++) {
@@ -240,9 +243,32 @@ public class Contatos extends javax.swing.JFrame {
             if (cont != null) {
                 Object[] row = new Object[1];
                 row[0] = cont.getNome();
-
+                
+                model.addRow(row);
             }
         }
     }
+    
+    /**
+     * Verifica se existe conexão com o banco de dados
+     * O sistema fica em um loop infinito até conseguir se conectar ao banco
+     * ou o usuário encerrar a aplicação
+     */
+    private void verificarConexao() {
+        do {
+            if (ServicoDb.verificarConexao()) {
+                break;
+            }
 
+            int yesNo = JOptionPane.showConfirmDialog(rootPane, "Não foi "
+                    + "possível estabelecer uma conexão com o "
+                    + "banco de dados.\n\nDeseja tentar novamente?",
+                    "Banco de Dados", JOptionPane.YES_NO_OPTION);
+
+            if (yesNo == JOptionPane.NO_OPTION || 
+                    yesNo == JOptionPane.CLOSED_OPTION) {
+                System.exit(0);
+            }
+        } while (true);
+    }
 }
