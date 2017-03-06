@@ -223,6 +223,7 @@ public class DaoContato {
                         result.getString("telefone"),
                         result.getString("email"));
                 contato.setId(result.getInt("id"));
+                contato.setDataCadastro(result.getDate("data_cadastro"));
 
                 listaContato.add(contato);
             }
@@ -270,6 +271,7 @@ public class DaoContato {
                         result.getString("telefone"),
                         result.getString("email"));
                 contato.setId(result.getInt("id"));
+                contato.setDataCadastro(result.getDate("data_cadastro"));
 
                 listaContato.add(contato);
             }
