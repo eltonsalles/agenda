@@ -8,6 +8,7 @@ import java.util.Date;
  */
 public class Contato {
 
+    private int id;
     private String nome;
     private Date dataNasc;
     private String telefone;
@@ -28,6 +29,14 @@ public class Contato {
         this.telefone = telefone;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     public String getNome() {
         return nome;
     }
