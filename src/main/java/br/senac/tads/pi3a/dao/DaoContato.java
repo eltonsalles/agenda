@@ -20,7 +20,7 @@ public class DaoContato {
         String sql;
 
         sql  = "INSERT INTO contato (nome, data_nasc, email, telefone, ";
-        sql += "data_cadastro VALUES (?, ?, ?, ?, ?)";
+        sql += "data_cadastro) VALUES (?, ?, ?, ?, ?)";
 
         executarSql(sql, contato, "insert");
 
