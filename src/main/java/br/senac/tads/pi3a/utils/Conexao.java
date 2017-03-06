@@ -16,12 +16,16 @@ public class Conexao {
      * Obtém uma conexão do banco de dados
      * 
      * @return
+     * @throws ClassNotFoundException 
      */
     @SuppressWarnings("CallToPrintStackTrace")
-    public static Connection getConexao() {
+    public static Connection getConexao() throws ClassNotFoundException {
         Connection conexao = null;
         
         try {
+            // Registrar o driver JDBC
+            Class.forName("org.apache.derby.jdbc.ClientDataSource");
+            
             // Endereço de conexão com o banco de dados
             String dbURL = Constantes.DB_ADDRESS;
             
