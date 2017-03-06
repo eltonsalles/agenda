@@ -29,6 +29,9 @@ public class Principal extends javax.swing.JFrame {
      * Creates new form Principal
      */
     public Principal() {
+        // Verifica a conexão com o banco de dados
+        this.verificarConexao();
+        
         initComponents();
     }
 
