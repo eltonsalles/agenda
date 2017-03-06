@@ -82,7 +82,7 @@ public class DaoContato {
         List<Contato> listaContato;
         String sql;
 
-        sql = "SELECT * FROM contato WHERE nome LIKE ?";
+        sql = "SELECT nome FROM contato WHERE nome LIKE ?";
 
         listaContato = executarConsulta(sql, nome);
 
