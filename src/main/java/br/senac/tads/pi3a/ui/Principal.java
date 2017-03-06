@@ -5,8 +5,8 @@
  */
 package br.senac.tads.pi3a.ui;
 
+import br.senac.tads.pi3a.dao.DaoContato;
 import br.senac.tads.pi3a.service.ServicoDb;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -31,7 +31,7 @@ public class Principal extends javax.swing.JFrame {
     public Principal() {
         // Verifica a conexão com o banco de dados
         this.verificarConexao();
-        
+
         initComponents();
     }
 
@@ -241,12 +241,6 @@ public class Principal extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        txtBuscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtBuscarActionPerformed(evt);
-            }
-        });
-
         bntBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/pesquisar.png"))); // NOI18N
         bntBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -327,21 +321,14 @@ public class Principal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtBuscarActionPerformed
-
     private void bntBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntBuscarActionPerformed
-        List<Contato> listaContato = new ArrayList<>();
+        List<Contato> listaContato;
         Contato contato = null;
 
         try {
 
             if (txtBuscar.getText().trim().isEmpty()) {
-                throw new Exception("Informe o nome do contato!");
-            } else if (!validarTamanho(txtBuscar.getText(), 150)) {
-                throw new Exception("Informe o nome do contato "
-                        + "corretamente, o limite de caracteres é 150!");
+                listaContato = ServicoContato.consultarContatos();
             } else {
                 listaContato = ServicoContato.consultarContatosPorNome(txtBuscar.getText());
             }
@@ -370,6 +357,8 @@ public class Principal extends javax.swing.JFrame {
                     "Cadastro realizado com sucesso!",
                     "Contato", JOptionPane.INFORMATION_MESSAGE);
 
+            limparDadosPreenchimento();
+            preencherTabela(DaoContato.consultarContatos());
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Erro",
                     JOptionPane.ERROR_MESSAGE);
@@ -387,6 +376,8 @@ public class Principal extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Cadastro atualizado com "
                     + "sucesso!", "Contato", JOptionPane.INFORMATION_MESSAGE);
 
+            limparDadosPreenchimento();
+            preencherTabela(DaoContato.consultarContatos());
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Erro",
                     JOptionPane.ERROR_MESSAGE);
@@ -408,6 +399,7 @@ public class Principal extends javax.swing.JFrame {
                         "Contato", JOptionPane.INFORMATION_MESSAGE);
 
                 limparDadosPreenchimento();
+                preencherTabela(DaoContato.consultarContatos());
             }
 
         } catch (Exception e) {
@@ -418,9 +410,9 @@ public class Principal extends javax.swing.JFrame {
 
     private void btIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btIncluirActionPerformed
         try {
-            
+
             limparDadosPreenchimento();
-            
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Erro",
                     JOptionPane.ERROR_MESSAGE);
@@ -432,7 +424,7 @@ public class Principal extends javax.swing.JFrame {
             Contato contato;
 
             try {
-                
+
                 int row = tbContatos.getSelectedRow();
 
                 int id = (int) tbContatos.getValueAt(row, 0);
@@ -440,7 +432,7 @@ public class Principal extends javax.swing.JFrame {
                 contato = ServicoContato.consultarContatoPorId(id);
 
                 carregarDados(contato);
-            
+
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, e.getMessage(), "Erro",
                         JOptionPane.ERROR_MESSAGE);
@@ -510,7 +502,9 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JTextField txtNome;
     private javax.swing.JFormattedTextField txtTelefone;
     // End of variables declaration//GEN-END:variables
+
     /**
+     * Valida os campos preenchidos
      *
      * @param dados
      * @return
@@ -563,6 +557,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     /**
+     * Verifica o tamanho do respectivo campo
      *
      * @param campo
      * @param tamanho
@@ -577,6 +572,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     /**
+     * Valida se a string é uma data válida
      *
      * @param data
      * @return
@@ -602,6 +598,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     /**
+     * Valida se a string tem um padrão de email
      *
      * @param email
      * @return
@@ -621,6 +618,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     /**
+     * Pega os dados da tela
      *
      * @return
      */
@@ -637,13 +635,21 @@ public class Principal extends javax.swing.JFrame {
     }
 
     /**
+     * Preenche o grid com a lista informada
      *
      * @param listaContatos
      */
     private void preencherTabela(List<Contato> listaContatos) {
+        // Arruma o tamanho da colunas
+        tbContatos.getColumnModel().getColumn(0).setPreferredWidth(25);
+        tbContatos.getColumnModel().getColumn(1).setPreferredWidth(140);
+        tbContatos.getColumnModel().getColumn(2).setPreferredWidth(100);
+        tbContatos.getColumnModel().getColumn(3).setPreferredWidth(145);
+        tbContatos.getColumnModel().getColumn(4).setPreferredWidth(85);
+        
         DefaultTableModel model = (DefaultTableModel) tbContatos.getModel();
         model.setRowCount(0);
-        
+
         // Variável para formatar as datas
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         sdf.setLenient(false);
@@ -689,14 +695,19 @@ public class Principal extends javax.swing.JFrame {
         } while (true);
     }
 
+    /**
+     * Carrega os dados na tela, em cada campo
+     *
+     * @param contato
+     */
     private void carregarDados(Contato contato) {
         btAlterar.setEnabled(true);
         btExcluir.setEnabled(true);
         btSalvar.setEnabled(false);
-        
+
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         sdf.setLenient(false);
-        
+
         txtNome.setText(contato.getNome());
         txtDataNasc.setText(sdf.format(contato.getDataNasc()));
         txtTelefone.setText(contato.getTelefone());
@@ -704,7 +715,10 @@ public class Principal extends javax.swing.JFrame {
         txtCodigo.setText(String.valueOf(contato.getId()));
         txtDataContato.setText(sdf.format(contato.getDataCadastro()));
     }
-    
+
+    /**
+     * Limpa os campos da tela
+     */
     private void limparDadosPreenchimento() {
         txtBuscar.setText(null);
         btAlterar.setEnabled(false);
@@ -716,7 +730,5 @@ public class Principal extends javax.swing.JFrame {
         txtEmail.setText(null);
         txtCodigo.setText(null);
         txtDataContato.setText(null);
-
     }
-    
 }
