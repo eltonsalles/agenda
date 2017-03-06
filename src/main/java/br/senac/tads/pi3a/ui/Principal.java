@@ -259,11 +259,11 @@ public class Principal extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Nome", "Data de Nascimento", "Email", "Telefone"
+                "Id", "Nome", "Data de Nascimento", "Email", "Telefone"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -652,11 +652,12 @@ public class Principal extends javax.swing.JFrame {
             Contato cont = listaContatos.get(i);
 
             if (cont != null) {
-                Object[] row = new Object[4];
-                row[0] = cont.getNome();
-                row[1] = sdf.format(cont.getDataNasc());
-                row[2] = cont.getEmail();
-                row[3] = cont.getTelefone();
+                Object[] row = new Object[5];
+                row[0] = cont.getId();
+                row[1] = cont.getNome();
+                row[2] = sdf.format(cont.getDataNasc());
+                row[3] = cont.getEmail();
+                row[4] = cont.getTelefone();
 
                 model.addRow(row);
             }
