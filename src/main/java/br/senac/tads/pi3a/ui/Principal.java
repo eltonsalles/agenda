@@ -379,6 +379,7 @@ public class Principal extends javax.swing.JFrame {
         try {
 
             Contato dados = validarDados(pegarDados());
+            dados.setId(Integer.valueOf(txtCodigo.getText()));
 
             ServicoContato.alterar(dados);
 
@@ -699,7 +700,8 @@ public class Principal extends javax.swing.JFrame {
         txtDataNasc.setText(sdf.format(contato.getDataNasc()));
         txtTelefone.setText(contato.getTelefone());
         txtEmail.setText(contato.getEmail());
-        
+        txtCodigo.setText(String.valueOf(contato.getId()));
+        txtDataContato.setText(sdf.format(contato.getDataCadastro()));
     }
     
     private void limparDadosPreenchimento() {
