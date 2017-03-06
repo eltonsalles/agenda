@@ -259,11 +259,11 @@ public class Principal extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Nome"
+                "Nome", "Data de Nascimento", "Email", "Telefone"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -276,7 +276,6 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(tbContatos);
-        tbContatos.getAccessibleContext().setAccessibleParent(null);
 
         javax.swing.GroupLayout jpListaLayout = new javax.swing.GroupLayout(jpLista);
         jpLista.setLayout(jpListaLayout);
@@ -316,7 +315,7 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, 22, Short.MAX_VALUE)
+                    .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 22, Short.MAX_VALUE)
                     .addComponent(bntBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jpContato, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -642,6 +641,10 @@ public class Principal extends javax.swing.JFrame {
     private void preencherTabela(List<Contato> listaContatos) {
         DefaultTableModel model = (DefaultTableModel) tbContatos.getModel();
         model.setRowCount(0);
+        
+        // Variável para formatar as datas
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        sdf.setLenient(false);
 
         int size = listaContatos.size();
 
@@ -649,11 +652,13 @@ public class Principal extends javax.swing.JFrame {
             Contato cont = listaContatos.get(i);
 
             if (cont != null) {
-                Object[] row = new Object[1];
+                Object[] row = new Object[4];
                 row[0] = cont.getNome();
+                row[1] = sdf.format(cont.getDataNasc());
+                row[2] = cont.getEmail();
+                row[3] = cont.getTelefone();
 
                 model.addRow(row);
-                
             }
         }
     }
