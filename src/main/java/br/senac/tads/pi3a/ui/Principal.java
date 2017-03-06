@@ -362,6 +362,7 @@ public class Principal extends javax.swing.JFrame {
     private void btSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSalvarActionPerformed
         try {
             Contato dados = validarDados(pegarDados());
+            dados.setDataCadastro(new Date());
 
             ServicoContato.cadastrar(dados);
 
