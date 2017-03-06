@@ -13,7 +13,7 @@ public class Contato {
     private Date dataNasc;
     private String telefone;
     private String email;
-    private Date dataCadastro = new Date();
+    private Date dataCadastro;
 
     /**
      *
