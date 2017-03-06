@@ -109,6 +109,8 @@ public class DaoContato {
             
             if (operacao.equalsIgnoreCase("insert")) {
                 stmt.setDate(5, new Date(contato.getDataCadastro().getTime()));
+            } else {
+                stmt.setInt(5, contato.getId());
             }
 
             stmt.execute();
@@ -240,6 +242,7 @@ public class DaoContato {
                         result.getDate("data_nasc"),
                         result.getString("telefone"),
                         result.getString("email"));
+                contato.setId(result.getInt("id"));
 
                 listaContato.add(contato);
             }
